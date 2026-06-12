@@ -1,0 +1,66 @@
+class CalculatorScreenState extends State<CalculatorScreen> {
+  String output = "0";
+  String expression = "";
+  double num1 = 0;
+  double num2 = 0;
+  String operand = "";
+
+  void buttonPressed(String buttonText) {
+    if (buttonText == "C") {
+      output = "0";
+      expression = "";
+      num1 = 0;
+      num2 = 0;
+      operand = "";
+    } else if (buttonText == "+" || buttonText == "-" || buttonText == "*" || buttonText == "/") {
+      num1 = double.parse(output);
+      operand = buttonText;
+      output = "0";
+    } else if (buttonText == "=") {
+      num2 = double.parse(output);
+      if (operand == "+") output = (num1 + num2).toString();
+      // Add more logic for -, *, / here
+    } else {
+      if (output == "0") {
+        output = buttonText;
+      } else {
+        output = output + buttonText;
+      }
+    }
+    setState(() {});
+  }
+
+  Widget buildButton(String buttonText, {Color? color, Color? textColor}) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: color,
+            foregroundColor: textColor,
+          ),
+          onPressed: () => buttonPressed(buttonText),
+          child: Text(buttonText, style: const TextStyle(fontSize: 20.0)),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Calculator')),
+      body: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+            child: Text(output, style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold)),
+          ),
+          const Divider(),
+          // Add your Rows of buildButton here
+        ],
+      ),
+    );
+  }
+}
